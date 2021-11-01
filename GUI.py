@@ -97,12 +97,12 @@ while True:
            except:
                continue
    elif event == '-SAVE-' and colorized is not None:   # Clicked the Save File button
-       filename = sg.popup_get_file('Save colorized image.\nColorized image be saved in format matching the extension you enter.', save_as=True)
+       filename = sg.popup_get_file('Colorized image should be saved in (.png, .jpg, jpeg).\nEnter file name:', save_as=True)
        try:
            if filename:
                cv2.imwrite(filename, colorized)
-               sg.popup_quick_message('Image save complete', background_color='red', text_color='white', font='Any 16')
+               sg.popup_quick_message('Image save complete', background_color='green', text_color='white', font='Any 16')
        except:
-           sg.popup_quick_message('ERROR - Image NOT saved!', background_color='red', text_color='white', font='Any 16')
+           sg.popup_quick_message('ERROR - Image is NOT saved!', background_color='red', text_color='white', font='Any 16')
 # ----- Exit program -----
 window.close()
