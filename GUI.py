@@ -9,25 +9,22 @@ import os.path
 model = load_model('autoencoder_color.h5')
 
 def colorize_image(path):
- img = cv2.imread(path)
- grayscale = cv2.imread(path,cv2.IMREAD_GRAYSCALE)
- grayscale = cv2.cvtColor(grayscale, cv2.COLOR_BGR2RGB)
- h = img.shape[0]
- w = img.shape[1]
- SIZE=160
- #resizing image
- img = cv2.resize(img, (SIZE, SIZE))
- img = img.astype('float32') / 255.0
+  grayscale = cv2.imread(path)
+  h = grayscale.shape[0]
+  w = grayscale.shape[1]
+  SIZE=160
+  #resizing image
+  grayscale = cv2.cvtColor(grayscale, cv2.COLOR_BGR2RGB)
+  grayscale = cv2.resize(grayscale, (SIZE, SIZE))
+  grayscale = grayscale.astype('float32') / 255.0
 
- colorized = np.clip(model.predict(img_to_array(img).reshape(1,SIZE, SIZE,3)),0.0,1.0).reshape(SIZE, SIZE,3)
- colorized = cv2.resize(colorized, (w,h))
-
-
- colorized = np.clip(colorized, 0, 1)
-
- # the current colorized image is represented as a floating point data type in the range [0, 1] -- let's convert to an unsigned 8-bit integer representation in the range [0, 255]
- colorized = (255 * colorized).astype("uint8")
- return grayscale, colorized
+  colorized = np.clip(model.predict(img_to_array(grayscale).reshape(1,SIZE, SIZE,3)),0.0,1.0).reshape(SIZE, SIZE,3)
+  colorized = cv2.resize(colorized, (w,h))
+  colorized = cv2.cvtColor(colorized, cv2.COLOR_RGB2BGR)
+  colorized = np.clip(colorized, 0, 1)
+  # the current colorized image is represented as a floating point data type in the range [0, 1] -- let's convert to an unsigned 8-bit integer representation in the range [0, 255]
+  colorized = (255 * colorized).astype("uint8")
+  return grayscale, colorized
 
 
 
